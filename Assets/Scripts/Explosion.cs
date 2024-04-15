@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Explosion : MonoBehaviour
 {
     [SerializeField] private Cube _cubePrefab;
@@ -21,7 +21,7 @@ public class Explosion : MonoBehaviour
     {
         if (_probability >= Random.value)
         {
-            SetProbability();
+            UpdateProbability();
 
             int quantityParts = Random.Range(_minQuantityPartsInExplosion, _maxQuantityPartsInExplosion);
 
@@ -36,7 +36,7 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void SetProbability()
+    private void UpdateProbability()
     {
         _probability /= _reductionRatio;
     }
