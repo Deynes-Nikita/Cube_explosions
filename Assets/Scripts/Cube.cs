@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
+    private Material _material;
+
+    private void Awake()
+    {
+        _material = GetComponent<Renderer>().material;
+    }
+
     private void Start()
     {
         SetColor();
@@ -9,7 +16,7 @@ public class Cube : MonoBehaviour
 
     private void SetColor()
     {
-        gameObject.GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
+        _material.color = new Color(Random.value, Random.value, Random.value);
     }
 
     public void SetScale(float reductionRatio)
