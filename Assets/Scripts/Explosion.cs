@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,7 +22,7 @@ public class Explosion : MonoBehaviour
     {
         if (_probability >= Random.value)
         {
-            UpdateProbability();
+            SetProbability();
 
             int quantityParts = Random.Range(_minQuantityPartsInExplosion, _maxQuantityPartsInExplosion);
 
@@ -36,7 +37,7 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void UpdateProbability()
+    private void SetProbability()
     {
         _probability /= _reductionRatio;
     }
@@ -48,6 +49,24 @@ public class Explosion : MonoBehaviour
 
     private void Explode()
     {
-        _rigidbody.AddExplosionForce(_explosionForce, transform.position, transform.localScale.x);
+        foreach (Rigidbody expodableCube in GetExpodableCube())
+        {
+            expodableCube.AddExplosionForce(_explosionForce, transform.position, transform.localScale.x);
+        }
+    }
+
+    private List<Rigidbody> GetExpodableCube()
+    {
+        Collider[] hits = Physics.OverlapBox(transform.position, transform.localScale);
+
+        List<Rigidbody> cubes = new List<Rigidbody>();
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.attachedRigidbody != null)
+                cubes.Add(hit.attachedRigidbody);
+        }
+
+        return cubes;
     }
 }
